@@ -25,7 +25,6 @@ M.on_attach = function(_, bufnr, client)
   map("n", "gr", vim.lsp.buf.references, opts "Show references")
 
   if client.name == "omnisharp" then
-    map("n", "<leader>do", require("omnisharp_extended").organize_imports, opts "Organize Imports")
     map("n", "gd", require("omnisharp_extended").lsp_definition, opts "Go to definition")
     map("n", "gD", require("omnisharp_extended").lsp_type_definition, opts "Go to declaration")
     map("n", "gr", require("omnisharp_extended").lsp_references, opts "Show references")
