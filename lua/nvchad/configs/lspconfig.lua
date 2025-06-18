@@ -2,7 +2,7 @@ local M = {}
 local map = vim.keymap.set
 
 -- export on_attach & capabilities
-M.on_attach = function(_, bufnr)
+M.on_attach = function(_, bufnr, client)
   local function opts(desc)
     return { buffer = bufnr, desc = "LSP " .. desc }
   end
@@ -23,6 +23,14 @@ M.on_attach = function(_, bufnr)
 
   map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
   map("n", "gr", vim.lsp.buf.references, opts "Show references")
+
+  if client.name == "omnisharp" then
+    map("n", "<leader>do", require("omnisharp_extended").organize_imports, opts "Organize Imports")
+    map("n", "gd", require("omnisharp_extended").lsp_definition, opts "Go to definition")
+    map("n", "gD", require("omnisharp_extended").lsp_type_definition, opts "Go to declaration")
+    map("n", "gr", require("omnisharp_extended").lsp_references, opts "Show references")
+    map("n", "gi", require("omnisharp_extended").lsp_implementation, opts "Go to implementation")
+  end
 end
 
 -- disable semanticTokens
@@ -58,7 +66,7 @@ M.defaults = function()
 
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
-      M.on_attach(_, args.buf)
+      M.on_attach(_, args.buf, vim.lsp.get_client_by_id(args.data.client_id))
     end,
   })
 
