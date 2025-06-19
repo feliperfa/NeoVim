@@ -7,9 +7,6 @@ M.on_attach = function(_, bufnr, client)
     return { buffer = bufnr, desc = "LSP " .. desc }
   end
 
-  map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
-  map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
-  map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
   map("n", "<leader>sh", vim.lsp.buf.signature_help, opts "Show signature help")
   map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
   map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
@@ -20,15 +17,18 @@ M.on_attach = function(_, bufnr, client)
 
   map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
   map("n", "<leader>ra", require "nvchad.lsp.renamer", opts "NvRenamer")
-
   map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
-  map("n", "gr", vim.lsp.buf.references, opts "Show references")
 
   if client.name == "omnisharp" then
     map("n", "gd", require("omnisharp_extended").lsp_definition, opts "Go to definition")
     map("n", "gD", require("omnisharp_extended").lsp_type_definition, opts "Go to declaration")
     map("n", "gr", require("omnisharp_extended").lsp_references, opts "Show references")
     map("n", "gi", require("omnisharp_extended").lsp_implementation, opts "Go to implementation")
+  else
+    map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
+    map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
+    map("n", "gr", vim.lsp.buf.references, opts "Show references")
+    map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
   end
 end
 
