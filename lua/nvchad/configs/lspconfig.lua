@@ -24,7 +24,7 @@ M.on_attach = function(_, bufnr, client)
     map("n", "gD", require("omnisharp_extended").lsp_type_definition, opts "Go to declaration")
     map("n", "gr", require("omnisharp_extended").lsp_references, opts "Show references")
     map("n", "gi", require("omnisharp_extended").lsp_implementation, opts "Go to implementation")
-  else
+  elseif client.name ~= "GitHub Copilot" then
     map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
     map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
     map("n", "gr", vim.lsp.buf.references, opts "Show references")
