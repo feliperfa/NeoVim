@@ -1,11 +1,23 @@
 local M = {}
 local map = vim.keymap.set
+local del = vim.keymap.del
 
 -- export on_attach & capabilities
 M.on_attach = function(_, bufnr, client)
   local function opts(desc)
     return { buffer = bufnr, desc = "LSP " .. desc }
   end
+
+  -- vim.keymap.del({mode}, {lhs}, {buffer = 0})
+  -- deleting default lsp mappings
+  del("n", "grr")
+  del("n", "grn")
+  del("n", "gri")
+  del("n", "gO")
+  del({ "n", "v" }, "gra")
+  del("i", "<C-s>")
+  del("v", "an")
+  del("v", "in")
 
   map("n", "<leader>sh", vim.lsp.buf.signature_help, opts "Show signature help")
   map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
@@ -15,7 +27,6 @@ M.on_attach = function(_, bufnr, client)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, opts "List workspace folders")
 
-  map("n", "gr", vim.lsp.buf.references, opts "Show references")
   map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
   map("n", "<leader>ra", require "nvchad.lsp.renamer", opts "NvRenamer")
   map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
@@ -23,12 +34,12 @@ M.on_attach = function(_, bufnr, client)
   if client.name == "omnisharp" then
     map("n", "gd", require("omnisharp_extended").lsp_definition, opts "Go to definition")
     map("n", "gD", require("omnisharp_extended").lsp_type_definition, opts "Go to declaration")
-    -- map("n", "gr", require("omnisharp_extended").lsp_references, opts "Show references")
+    map("n", "gr", require("omnisharp_extended").lsp_references, opts "Show references")
     map("n", "gi", require("omnisharp_extended").lsp_implementation, opts "Go to implementation")
-  elseif client.name ~= "GitHub Copilot" then
+  else
     map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
     map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
-    -- map("n", "gr", vim.lsp.buf.references, opts "Show references")
+    map("n", "gr", vim.lsp.buf.references, opts "Show references")
     map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
   end
 end
