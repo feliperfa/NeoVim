@@ -8,17 +8,6 @@ M.on_attach = function(_, bufnr, client)
     return { buffer = bufnr, desc = "LSP " .. desc }
   end
 
-  -- vim.keymap.del({mode}, {lhs}, {buffer = 0})
-  -- deleting default lsp mappings
-  del("n", "grr")
-  del("n", "grn")
-  del("n", "gri")
-  del("n", "gO")
-  del({ "n", "v" }, "gra")
-  del("i", "<C-s>")
-  del("v", "an")
-  del("v", "in")
-
   map("n", "<leader>sh", vim.lsp.buf.signature_help, opts "Show signature help")
   map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
   map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
@@ -42,6 +31,14 @@ M.on_attach = function(_, bufnr, client)
     map("n", "gr", vim.lsp.buf.references, opts "Show references")
     map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
   end
+
+  -- -- vim.keymap.del({mode}, {lhs}, {buffer = 0})
+  -- -- deleting default lsp mappings
+  -- del("n", "grr")
+  -- del("n", "grn")
+  -- del("n", "gri")
+  -- del("n", "gO")
+  -- del({ "n", "v" }, "gra")
 end
 
 -- disable semanticTokens
